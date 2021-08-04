@@ -1,0 +1,82 @@
+﻿@page
+@model RazorPagesProject.Pages.Bookings.NewBookingModel
+@{
+}
+<div class="row">
+    <h1>New Booking Evelyn Toh S10204497D</h1>
+    <div class="row m-5">
+        <div class="col">
+            <div asp-validation-summary="All"></div>
+            <form method="post">
+                <p>
+                    <label>
+                        Name:
+                    </label>
+                    <input type="text" class="form-control" asp-for=Booking.CustomerName />
+                    <label>
+                        Contact Number:
+                    </label>
+                    <input type="text" class="form-control" asp-for=Booking.ContactNumber />
+                </p>
+
+
+                @foreach (var item in Model.Rooms)
+                {
+                    <br />
+                    <div>
+                        Room Type: @Html.DisplayFor(modelItem => item.RoomName)
+                    </div>
+                    <br />
+                    <div>
+                        Price: $@Html.DisplayFor(modelItem => item.Price)
+                    </div>
+                    <br />
+                    <div>
+                        Room Size: @Html.DisplayFor(modelItem => item.RoomSize) sqm
+                    </div>
+                    <div class="row m-4">
+                        <img src="~/images/@Html.DisplayFor(modelItem => item.ImageUrl)" height="300" />
+                    </div>
+                }
+                <div>
+                    <div class="row m-4">
+                        <p>
+                            <input type="radio" asp-for=Room.RoomName value="Superior" checked="checked" /> Superior<br />
+                            <input type="radio" asp-for=Room.RoomName value="Deluxe" /> Deluxe<br />
+                            <input type="radio" asp-for=Room.RoomName value="Adjoining" /> Adjoining<br />
+                            <input type="radio" asp-for=Room.RoomName value="Suite" /> Suite<br />
+                            <input type="radio" asp-for=Room.RoomName value="FamilySuite" /> Family Suite<br />
+                        </p>
+                    </div>
+                    <p>
+                        <input type="checkbox" asp-for="BreakfastBuffet" /> Breakfast Buffet<br />
+                        <input type="checkbox" asp-for="Balcony" /> Balcony<br />
+                        <input type="checkbox" asp-for="SeaView" /> Sea View<br />
+                        <input type="checkbox" asp-for="ExtraBed" /> Extra Bed<br />
+                    <p>
+                        Start Booking Date:
+                        <input type="datetime-local" asp-for="Booking.CheckInDateTime" class="form-control">
+                    </p>
+                    <p>
+                        End Booking Date:
+                        <input type="datetime-local" asp-for="Booking.CheckOutDateTime" class="form-control">
+                    </p>
+                </div>
+                <input type="submit" value="Book" />
+                <p>
+                    Customer Information: @Model.CustomerInfo
+                </p>
+                <p>
+                    Booking Information: @Model.BookingInfo
+                </p>
+                <p>
+                    Total Price: @Model.Booking?.TotalPrice
+                </p>
+            </form>
+        </div>
+
+    </div>
+
+
+
+</div>
