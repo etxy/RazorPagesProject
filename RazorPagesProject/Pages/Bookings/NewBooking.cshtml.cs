@@ -21,96 +21,47 @@ namespace RazorPagesProject.Pages.Bookings
         }
 
         [BindProperty]
-        public IList<Room> Rooms { get; set; }
+        public BookingVm BookingVm { get; set; }
 
-        public string BookingInfo { get; set; }
-        public string CustomerInfo { get; set; }
-        [BindProperty]
-        public Booking Booking { get; set; }
-        [BindProperty]
-        public Room Room { get; set; }
 
-        [BindProperty]
-        [Required(ErrorMessage = "You must enter your name")]
-        public string CustomerName { get; set; }
-        [BindProperty]
-        [Required(ErrorMessage = "You must enter your contact number")]
-        public string ContactNumber { get; set; }
-
-        [BindProperty]
-        public bool BreakfastBuffet { get; set; }
-        [BindProperty]
-        public bool Balcony { get; set; }
-        [BindProperty]
-        public bool SeaView { get; set; }
-        [BindProperty]
-        public bool ExtraBed { get; set; }
-        public string Message { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                if (Room.RoomName == "Superior")
-                {
-                    Booking.TotalPrice = Room.Price;
-                }
-                else if (Room.RoomName == "Deluxe")
-                {
-                    Booking.TotalPrice = Room.Price;
-                }
-                else if (Room.RoomName == "Adjoining")
-                {
-                    Booking.TotalPrice = Room.Price;
-                }
-                else if (Room.RoomName == "Suite")
-                {
-                    Booking.TotalPrice = Room.Price;
-                }
-                else if (Room.RoomName == "Family")
-                {
-                    Booking.TotalPrice = Room.Price;
-                }
+                var getFirstRoom =await _context.Room.FirstOrDefaultAsync(x => x.Id == BookingVm.BookingRoomId);
 
-                if (BreakfastBuffet == true)
+                var booking = new Booking()
                 {
-                    BookingInfo += " with breakfast buffet";
-                    Booking.TotalPrice += 30;
-                }
-                if (Balcony == true)
-                {
-                    BookingInfo += " with balcony";
-                    Booking.TotalPrice += 100;
-                }
-                if (SeaView == true)
-                {
-                    BookingInfo += " with sea view";
-                    Booking.TotalPrice += 50;
-                }
-                if (ExtraBed == true)
-                {
-                    BookingInfo += " add extra bed";
-                    Booking.TotalPrice += 50;
-                }
-                if (Booking.CheckInDateTime > System.DateTime.Now.AddDays(60))
-                {
-                    Message = "Booking of rooms 60 days ahead gives you 10% discount!";
-                    Booking.TotalPrice = Booking.TotalPrice * 0.9f;
-                }
-                CustomerInfo = "Name: " + Booking.CustomerName + "Contact Number: " + Booking.ContactNumber;
-                BookingInfo = "\nStart Booking Date: " + Booking.CheckInDateTime.ToString() + "\nEnd Booking Date: " + Booking.CheckOutDateTime.ToString() + "\nRoom Type: " + Room.RoomName;
+                    CustomerName = BookingVm.Booking.CustomerName,
+                    ContactNumber =BookingVm.Booking.ContactNumber,
+                    CheckInDateTime = BookingVm.Booking.CheckInDateTime,
+                    CheckOutDateTime = BookingVm.Booking.CheckOutDateTime,
 
-                _context.Booking.Add(Booking);
+                    Quantity = BookingVm.Booking.Quantity,
+                    ServicesOption = BookingVm.Booking.ServicesOption,
+                    TotalPrice = BookingVm.Booking.TotalPrice,
+                    Room = getFirstRoom
+                };
+
+
+                _context.Booking.Add(booking);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
             }
-            else
-            {
-                return Page();
-            }
+            return Redirect("~/");
+
+
         }
         public async Task OnGetAsync()
         {
-            Rooms = await _context.Room.ToListAsync();
+            var rooms = await _context.Room.ToListAsync();
+            var model = new BookingVm();
+
+            foreach (var room in rooms)
+            {
+                model.Rooms.Add(room);
+            }
+
+            BookingVm = model;
         }
     }
 }

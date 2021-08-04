@@ -20,18 +20,22 @@ namespace RazorPagesProject.Pages.Bookings
         }
 
         public IList<Booking> Booking { get; set; }
-        public int Total { get; set; }
-        public float Sales { get; set; }
+        public float TotalSales { get; set; }
 
         [BindProperty]
         public string BookingSearchString { get; set; }
 
         public async Task OnPostAsync()
         {
-            var orders = from r in _context.Booking
-                         select r;
-
-            Booking = await orders.ToListAsync();
+            var bookings = from r in _context.Booking
+                           select r;
+            if (!string.IsNullOrEmpty(BookingSearchString))
+            { 
+                TotalSales = (from r in _context.Booking
+                         where r.Room.RoomName.Contains(BookingSearchString)
+                         select r.TotalPrice).Sum();
+            }
+            Booking = await bookings.ToListAsync();
         }
 
     }
