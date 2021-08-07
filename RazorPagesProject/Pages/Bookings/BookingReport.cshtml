@@ -2,37 +2,3 @@
 @model RazorPagesProject.Pages.Bookings.BookingReportModel
 @{
 }
-<h1>Booking Report</h1>
-<form method="post">
-    <p>
-        Room: <input type="text" asp-for="BookingSearchString" />
-    </p>
-    <p>
-        <input type="submit" value="Display" />
-    </p>
-</form>
-@if (Model.Booking != null)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Room Type</th>
-                <th>Total Price</th>
-                <th>Check In Date</th>
-                <th>Check Out Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Booking)
-            {
-                <tr>
-                    <td>@item.Room</td>
-                    <td>@item.TotalPrice</td>
-                    <td>@item.CheckInDateTime</td>
-                    <td>@item.CheckOutDateTime</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <p>Total sales of @Model.BookingSearchString: @Model.TotalSales</p>
-}

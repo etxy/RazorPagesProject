@@ -9,15 +9,8 @@ namespace RazorPagesProject.Pages.Bookings
 {
     public class BookingSummaryModel : PageModel
     {
-        public string BookingInfo { get; set; }
-        public string CustomerInfo { get; set; }
-        public Models.Booking Booking { get; set; }
-        public Models.Room Room { get; set; }
-        public void OnPost()
+        public void OnGet()
         {
-            CustomerInfo = "Name: " + Booking.CustomerName + "Contact Number: " + Booking.ContactNumber;
-            BookingInfo = "\nStart Booking Date: " + Booking.CheckInDateTime.ToString() + "\nEnd Booking Date: " + 
-                Booking.CheckOutDateTime.ToString() + "\nRoom Type: " + Room.RoomName;
         }
     }
 }

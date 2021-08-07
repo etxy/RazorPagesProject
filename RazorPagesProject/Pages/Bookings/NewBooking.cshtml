@@ -2,77 +2,93 @@
 @model RazorPagesProject.Pages.Bookings.NewBookingModel
 @{
 }
-<div class="row">
-    <h1>New Booking Evelyn Toh S10204497D</h1>
-    <div class="row m-5">
-        <div class="col">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <form method="post" id="myform1">
+<div class="container">
+    <div class="row">
+        <div class="text-center" style="width: 100%">
+            <h1>New Booking Evelyn Toh S10204497D</h1>
+        </div>
+    </div>
+    <form method="post" id="myform1">
+        <div class="row">
+            <div class="col-7">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @foreach (var item in Model.BookingVm.Rooms)
+                {
+                    <div class="border">
+                        <div class="row m-4">
+                            <img src="~/images/@Html.DisplayFor(modelItem => item.ImageUrl)" width="100%" />
+                        </div>
+                        <div class="m-4">
+                            <div>
+                                <input type="radio" asp-for="BookingVm.BookingRoomId" value="@item.Id" onclick="clickPrice(this)" data-price="@item.Price" />
+                                Room Type: @Html.DisplayFor(modelItem => item.RoomName)
+                            </div>
+                            <div class="my-2">
+                                Price: $  @Html.DisplayFor(modelItem => item.Price)
+                            </div>
+                            <div>
+                                Room Size: @Html.DisplayFor(modelItem => item.RoomSize) sqm
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-5 border ">
                 <p>
                     <label>
                         Name:
                     </label>
                     <input type="text" class="form-control" asp-for=BookingVm.Booking.CustomerName />
                     <span asp-validation-for="BookingVm.Booking.CustomerName" class="text-danger"></span>
-                    <br />
-
+                </p>
+                <p>
                     <label>
                         Contact Number:
                     </label>
                     <input type="text" class="form-control" asp-for=BookingVm.Booking.ContactNumber />
+                    <span asp-validation-for="BookingVm.Booking.ContactNumber" class="text-danger"></span>
+
                 </p>
+                <div>
+                    <div>
+                        @for (int i = 0; i < Model.BookingVm.ServiceOptions.Count; i++)
+                        {
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-inline" type="checkbox" value="@Model.BookingVm.ServiceOptions[i].Id" />
+                                <label>@Model.BookingVm.ServiceOptions[i].Item</label>
+                                <span>$@Model.BookingVm.ServiceOptions[i].Price</span>
+                            </div>
+                        }
 
-
-                @foreach (var item in Model.BookingVm.Rooms)
-                {
-                    <div style="border:1px solid black">
-                        <div class="row m-4">
-                            <img src="~/images/@Html.DisplayFor(modelItem => item.ImageUrl)" height="300" />
-                        </div>
-                        <br />
-
-                        <div>
-                            <input type="radio" asp-for="BookingVm.BookingRoomId" value="@item.Id" onclick="clickPrice(this)" data-price="@item.Price" />
-                            Room Type: @Html.DisplayFor(modelItem => item.RoomName)
-                        </div>
-                        <br />
-                        <span>
-                            Price: $  @Html.DisplayFor(modelItem => item.Price)
-                        </span>
-                        <br />
-                        <div>
-                            Room Size: @Html.DisplayFor(modelItem => item.RoomSize) sqm
-                        </div>
                     </div>
-
-                }
-                <div>
-                    <p>
-                        <input type="checkbox" asp-for="BookingVm.BreakfastBuffet" /> Breakfast Buffet<br />
-                        <input type="checkbox" asp-for="BookingVm.Balcony" /> Balcony<br />
-                        <input type="checkbox" asp-for="BookingVm.SeaView" /> Sea View<br />
-                        <input type="checkbox" asp-for="BookingVm.ExtraBed" /> Extra Bed<br />
-                    <p>
-                        Start Booking Date:
-                        <input type="datetime-local" asp-for="BookingVm.Booking.CheckInDateTime" class="form-control">
-                    </p>
-                    <p>
-                        End Booking Date:
-                        <input type="datetime-local" asp-for="BookingVm.Booking.CheckOutDateTime" class="form-control">
-                    </p>
+                    <div>
+                        <p>
+                            Start Booking Date:
+                            <input type="datetime-local" asp-for="BookingVm.Booking.CheckInDateTime" class="form-control">
+                            <span asp-validation-for="BookingVm.Booking.CheckInDateTime" class="text-danger"></span>
+                        </p>
+                        <p>
+                            <label>Number of Days:</label>
+                            <input type="text" asp-for="BookingVm.Booking.NumOfDays" value="1" class="form-control" />
+                        </p>
+                    </div>
                 </div>
-
-                <div>
-                    <label>Quantity</label>
-                    <input type="text" asp-for="BookingVm.Booking.Quantity" value="1" />
-                    <label>Total Price</label>
-                    <input type="text" asp-for="BookingVm.Booking.TotalPrice" value="0" />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Quantity:</label>
+                        <input type="text" asp-for="BookingVm.Booking.Quantity" value="1" class="form-control" />
+                    </div>
+                    <div class="col-6">
+                        <label>Total Price:</label>
+                        <input type="text" asp-for="BookingVm.Booking.TotalPrice" value="0" class="form-control" />
+                    </div>
                 </div>
-                <input type="submit" value="Book" />
-            </form>
+                <div>
+                    <input class="btn btn-success mt-4" type="submit" value="   Book    " />
+                </div>
+            </div>
         </div>
-    </div>
-
+    </form>
 </div>
 
 
@@ -87,13 +103,47 @@
             function clickPrice(obj) {
                 console.log(' obj.value', obj);
                 p = obj.dataset.price;
+                var n1 = parseFloat(p);
                 $("#BookingVm_Booking_Quantity").val(1);
-                $("#BookingVm_Booking_TotalPrice").val(p)
+                $("#BookingVm_Booking_TotalPrice").val(n1.toFixed(2))
             }
 
+            $("#BookingVm_BreakfastBuffet").click(function () {
+                var bb = $("#BookingVm_BreakfastBuffet").val();
+                var n1 = parseFloat(p);
+                var n2 = parseFloat(bb);
+                $("#BookingVm_Booking_TotalPrice").val((n1 + n2).toFixed(2))
+            })
+
+            $("#BookingVm_ExtraBed").click(function () {
+                var e = $("#BookingVm_ExtraBed").val();
+                var bb = $("#BookingVm_BreakfastBuffet").val();
+                var n1 = parseFloat(p);
+                var n2 = parseFloat(bb);
+                var n3 = parseFloat(e);
+                $("#BookingVm_Booking_TotalPrice").val((n1 + n2 + n3).toFixed(2))
+            })
+
             $("#BookingVm_Booking_Quantity").keyup(function () {
+                var days = $("#BookingVm_Booking_NumOfDays").val();
                 var qty = $("#BookingVm_Booking_Quantity").val();
-                $("#BookingVm_Booking_TotalPrice").val(qty * p)
+                var bb = $("#BookingVm_BreakfastBuffet").val();
+                var e = $("#BookingVm_ExtraBed").val();
+                var n1 = parseFloat(p);
+                var n2 = parseFloat(bb);
+                var n3 = parseFloat(e);
+                $("#BookingVm_Booking_TotalPrice").val(((qty * days) * (n1 + n2 + n3)).toFixed(2))
+            })
+
+            $("#BookingVm_Booking_NumOfDays").keyup(function () {
+                var days = $("#BookingVm_Booking_NumOfDays").val();
+                var qty = $("#BookingVm_Booking_Quantity").val();
+                var bb = $("#BookingVm_BreakfastBuffet").val();
+                var e = $("#BookingVm_ExtraBed").val();
+                var n1 = parseFloat(p);
+                var n2 = parseFloat(bb);
+                var n3 = parseFloat(e);
+                $("#BookingVm_Booking_TotalPrice").val(((qty * days) * (n1 + n2 + n3)).toFixed(2))
             })
 
         </script>
