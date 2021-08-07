@@ -11,12 +11,10 @@ namespace RazorPagesProject.Models
     {
         public int BookingRoomId { get; set; }
         public bool BreakfastBuffet { get; set; }
-        public bool Balcony { get; set; }
-        public bool SeaView { get; set; }
         public bool ExtraBed { get; set; }
 
         public Booking Booking { get; set; }
         public IList<Room> Rooms { get; set; } = new List<Room>();
-
+        public IList<ServiceOption> ServiceOptions { get; set; } = new List<ServiceOption>();
     }
 }

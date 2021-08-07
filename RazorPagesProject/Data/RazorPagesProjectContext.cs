@@ -16,5 +16,6 @@ namespace RazorPagesProject.Data
 
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Room> Room { get; set; }
+        public DbSet<ServiceOption> ServiceOptions { get; set; }
     }
 }

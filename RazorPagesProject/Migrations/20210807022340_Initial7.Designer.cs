@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RazorPagesProject.Data;
 
 namespace RazorPagesProject.Migrations
 {
     [DbContext(typeof(RazorPagesProjectContext))]
-    partial class RazorPagesProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210807022340_Initial7")]
+    partial class Initial7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BookingServiceOption", b =>
-                {
-                    b.Property<int>("BookingsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceOptionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingsID", "ServiceOptionsId");
-
-                    b.HasIndex("ServiceOptionsId");
-
-                    b.ToTable("BookingServiceOption");
-                });
 
             modelBuilder.Entity("RazorPagesProject.Models.Booking", b =>
                 {
@@ -99,39 +86,6 @@ namespace RazorPagesProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Room");
-                });
-
-            modelBuilder.Entity("RazorPagesProject.Models.ServiceOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Item")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceOptions");
-                });
-
-            modelBuilder.Entity("BookingServiceOption", b =>
-                {
-                    b.HasOne("RazorPagesProject.Models.Booking", null)
-                        .WithMany()
-                        .HasForeignKey("BookingsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RazorPagesProject.Models.ServiceOption", null)
-                        .WithMany()
-                        .HasForeignKey("ServiceOptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RazorPagesProject.Models.Booking", b =>

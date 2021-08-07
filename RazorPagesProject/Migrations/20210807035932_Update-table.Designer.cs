@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RazorPagesProject.Data;
 
 namespace RazorPagesProject.Migrations
 {
     [DbContext(typeof(RazorPagesProjectContext))]
-    partial class RazorPagesProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210807035932_Update-table")]
+    partial class Updatetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

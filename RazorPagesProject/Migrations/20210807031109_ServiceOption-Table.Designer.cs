@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RazorPagesProject.Data;
 
 namespace RazorPagesProject.Migrations
 {
     [DbContext(typeof(RazorPagesProjectContext))]
-    partial class RazorPagesProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210807031109_ServiceOption-Table")]
+    partial class ServiceOptionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BookingServiceOption", b =>
-                {
-                    b.Property<int>("BookingsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceOptionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingsID", "ServiceOptionsId");
-
-                    b.HasIndex("ServiceOptionsId");
-
-                    b.ToTable("BookingServiceOption");
-                });
 
             modelBuilder.Entity("RazorPagesProject.Models.Booking", b =>
                 {
@@ -108,6 +95,9 @@ namespace RazorPagesProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BookingID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Item")
                         .HasColumnType("nvarchar(max)");
 
@@ -116,22 +106,9 @@ namespace RazorPagesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceOptions");
-                });
+                    b.HasIndex("BookingID");
 
-            modelBuilder.Entity("BookingServiceOption", b =>
-                {
-                    b.HasOne("RazorPagesProject.Models.Booking", null)
-                        .WithMany()
-                        .HasForeignKey("BookingsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RazorPagesProject.Models.ServiceOption", null)
-                        .WithMany()
-                        .HasForeignKey("ServiceOptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("ServiceOption");
                 });
 
             modelBuilder.Entity("RazorPagesProject.Models.Booking", b =>
@@ -141,6 +118,18 @@ namespace RazorPagesProject.Migrations
                         .HasForeignKey("RoomId");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("RazorPagesProject.Models.ServiceOption", b =>
+                {
+                    b.HasOne("RazorPagesProject.Models.Booking", null)
+                        .WithMany("ServiceOptions")
+                        .HasForeignKey("BookingID");
+                });
+
+            modelBuilder.Entity("RazorPagesProject.Models.Booking", b =>
+                {
+                    b.Navigation("ServiceOptions");
                 });
 #pragma warning restore 612, 618
         }
