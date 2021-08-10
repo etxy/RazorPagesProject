@@ -2,3 +2,86 @@
 @model RazorPagesProject.Pages.Bookings.BookingSummaryModel
 @{
 }
+<h1>Booking Summary Evelyn Toh S10204497D</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Customer name:</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.CustomerName)</div>
+            </div>
+        </div>
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Contact number:</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.ContactNumber)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Check-In Date:</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.CheckInDateTime)</div>
+            </div>
+        </div>
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Number of rooms:</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.Quantity)</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Check-On Date:</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.CheckOutDateTime)</div>
+
+
+            </div>
+        </div>
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Room type:</div>
+                <div class="col-8">Superior</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+           
+
+            <th>
+                ServicesOption
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+
+
+            @foreach (var item in @Model.Booking.ServiceOptions)
+            {
+                <td>@item.Item</td>
+                <td>$@item.Price</td>
+            }
+</tbody>
+</table>
+<div class="container">
+    <div class="row">
+        <div class="col-6 border">
+            <div class="row">
+                <div class="col-4">Total Price:</div>
+                <div class="col-8">$@Html.DisplayFor(modelItem => Model.Booking.TotalPrice)</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,8 +14,8 @@ namespace RazorPagesProject.Pages.Bookings
 {
     public class NewBookingModel : PageModel
     {
-        private readonly RazorPagesProject.Data.RazorPagesProjectContext _context;
-        public NewBookingModel(RazorPagesProject.Data.RazorPagesProjectContext context)
+        private readonly RazorPagesProjectContext _context;
+        public NewBookingModel(RazorPagesProjectContext context)
         {
             _context = context;
         }
@@ -24,12 +24,12 @@ namespace RazorPagesProject.Pages.Bookings
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (ModelState.IsValid) { }
+            if (ModelState.IsValid) { }
 
             IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
             Console.WriteLine(allErrors);
 
-            if (true)
+            //if (true)
             {
                 var getFirstRoom = await _context.Room.FirstOrDefaultAsync(x => x.Id == BookingVm.BookingRoomId);
 
@@ -55,7 +55,6 @@ namespace RazorPagesProject.Pages.Bookings
                     NumOfDays = BookingVm.Booking.NumOfDays,
 
                     Quantity = BookingVm.Booking.Quantity,
-                    ServicesOption = BookingVm.Booking.ServicesOption,
                     TotalPrice = BookingVm.Booking.TotalPrice,
                     Room = getFirstRoom,
                     ServiceOptions = so

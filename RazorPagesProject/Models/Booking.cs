@@ -20,7 +20,6 @@ namespace RazorPagesProject.Models
         [BindProperty]
         [Required(ErrorMessage = "You must enter the number of room(s) you want to book")]
         public int Quantity { get; set; }
-        public string ServicesOption { get; set; }
         [BindProperty]
         [Required(ErrorMessage = "You must enter the number of days of your stay")]
         public int NumOfDays { get; set; }
@@ -28,9 +27,10 @@ namespace RazorPagesProject.Models
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "You must enter the check-in date time you want to book")]
         public DateTime CheckInDateTime { get; set; } = System.DateTime.Now;
+        [DataType(DataType.Date)]
         public DateTime CheckOutDateTime { get; set; } = System.DateTime.Now;
 
         public virtual Room Room { get; set; }
-        public ICollection<ServiceOption> ServiceOptions { get; set; }
+        public ICollection<ServiceOption> ServiceOptions { get; set; } = new List<ServiceOption>();
     }
 }
