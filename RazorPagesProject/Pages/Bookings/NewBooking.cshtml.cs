@@ -24,51 +24,45 @@ namespace RazorPagesProject.Pages.Bookings
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid) { }
-
-            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            Console.WriteLine(allErrors);
-
-            //if (true)
+            if (ModelState.IsValid)
             {
-                var getFirstRoom = await _context.Room.FirstOrDefaultAsync(x => x.Id == BookingVm.BookingRoomId);
-
-                if (BookingVm.Booking.CheckInDateTime > DateTime.Now.AddDays(60))
                 {
-                    BookingVm.Booking.TotalPrice = (float)Math.Round((BookingVm.Booking.TotalPrice * 0.9f), 2);
-                    //BookingVm.  add a sentence to let customers know that they have a discount
+                    var getFirstRoom = await _context.Room.FirstOrDefaultAsync(x => x.Id == BookingVm.BookingRoomId);
+
+                    if (BookingVm.Booking.CheckInDateTime > DateTime.Now.AddDays(60))
+                    {
+                        BookingVm.Booking.TotalPrice = (float)Math.Round((BookingVm.Booking.TotalPrice * 0.9f), 2);
+                    }
+
+                    var so = new List<ServiceOption>();
+
+                    foreach (var item in BookingVm.Booking.ServiceOptions)
+                    {
+                        so.Add(item);
+                    }
+
+                    var booking = new Booking()
+                    {
+                        CustomerName = BookingVm.Booking.CustomerName,
+                        ContactNumber = BookingVm.Booking.ContactNumber,
+                        CheckInDateTime = BookingVm.Booking.CheckInDateTime,
+                        CheckOutDateTime = BookingVm.Booking.CheckInDateTime.AddDays(BookingVm.Booking.NumOfDays),
+                        NumOfDays = BookingVm.Booking.NumOfDays,
+
+                        Quantity = BookingVm.Booking.Quantity,
+                        TotalPrice = BookingVm.Booking.TotalPrice,
+                        Room = getFirstRoom,
+                        ServiceOptions = so
+                    };
+
+                    _context.Booking.Add(booking);
+                    await _context.SaveChangesAsync();
+                    return Redirect("./BookingSummary");
                 }
-
-                var so = new List<ServiceOption>();
-
-                foreach (var item in BookingVm.Booking.ServiceOptions)
-                {
-                    so.Add(item);
-                }
-
-                var booking = new Booking()
-                {
-                    CustomerName = BookingVm.Booking.CustomerName,
-                    ContactNumber = BookingVm.Booking.ContactNumber,
-                    CheckInDateTime = BookingVm.Booking.CheckInDateTime,
-                    CheckOutDateTime = BookingVm.Booking.CheckInDateTime.AddDays(BookingVm.Booking.NumOfDays),
-                    NumOfDays = BookingVm.Booking.NumOfDays,
-
-                    Quantity = BookingVm.Booking.Quantity,
-                    TotalPrice = BookingVm.Booking.TotalPrice,
-                    Room = getFirstRoom,
-                    ServiceOptions = so
-                };
-
-                _context.Booking.Add(booking);
-                await _context.SaveChangesAsync();
-                return Redirect("./BookingSummary");
             }
-            return Redirect("~/");
-
-
+            else return RedirectToPage("./Index");
         }
-        public async Task OnGetAsync()
+            public async Task OnGetAsync()
         {
             var rooms = await _context.Room.ToListAsync();
             var sos = await _context.ServiceOptions.ToListAsync();

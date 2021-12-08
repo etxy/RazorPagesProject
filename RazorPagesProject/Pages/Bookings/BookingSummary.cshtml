@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-6 border">
             <div class="row">
-                <div class="col-4">Check-On Date:</div>
+                <div class="col-4">Check-Out Date:</div>
                 <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.CheckOutDateTime)</div>
 
 
@@ -46,7 +46,7 @@
         <div class="col-6 border">
             <div class="row">
                 <div class="col-4">Room type:</div>
-                <div class="col-8">Superior</div>
+                <div class="col-8">@Html.DisplayFor(modelItem => Model.Booking.Room.RoomName) </div>
             </div>
         </div>
     </div>

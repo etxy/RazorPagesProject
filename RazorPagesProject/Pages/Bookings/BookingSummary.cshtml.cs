@@ -14,7 +14,6 @@ namespace RazorPagesProject.Pages.Bookings
     {
         private readonly RazorPagesProjectContext _context;
 
-        // constructor - first entry
         public BookingSummaryModel(RazorPagesProjectContext context)
         {
             _context = context;
